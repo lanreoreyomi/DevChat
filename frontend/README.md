@@ -10,15 +10,15 @@ More information about Vue can be found at [Vue.js](https://vuejs.org/).
 ## Project setup
 ```
 The front end requires a few dependencies to be installed.
-1. Node.js
+1. npm
 2. Vue.js
 
 To install the dependencies, run the following command:
 
 ```
-###Installing Node.js
+### Installing npm
 ```
-Please refer to the official Node Js website for installation information. [https://nodejs.org/en/download/]
+Please refer to the official npm website for installation information. [https://docs.npmjs.com/cli/v7/configuring-npm/install]
 
 ```
 ### Installing Vue.js

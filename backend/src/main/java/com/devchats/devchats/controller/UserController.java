@@ -94,8 +94,7 @@ public class UserController {
   }//end of deleteUserById
 
 
-  //TODO: Move logic and exception handling to service layer
-  // Updates a user by Id
+   // Updates a user by Id
   @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
   //http://localhost:5050/api/v1/user/1
   public ResponseEntity<UserDTO> updateUserById(@PathVariable String id, @RequestBody User request)
@@ -149,6 +148,8 @@ public class UserController {
 
 
   public static UserDTO convertUserEntityToDTO(User user) {
+
+
 
     UserDTO userDTO = new UserDTO();
     BeanUtils.copyProperties(user, userDTO);
