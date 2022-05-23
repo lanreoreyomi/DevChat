@@ -1,11 +1,15 @@
 package com.devchats.devchats.service;
 
+import static com.devchats.devchats.util.RegextUtils.emailIsValid;
+
 import com.devchats.devchats.exceptions.CustomException;
+import com.devchats.devchats.exceptions.EmailException;
 import com.devchats.devchats.exceptions.UserNotFoundException;
-import com.devchats.devchats.interfacce.UserService;
+import com.devchats.devchats.interfacce.IUserService;
 import com.devchats.devchats.model.User;
 import com.devchats.devchats.repository.UserRepository;
 import com.devchats.devchats.security.PasswordHash;
+import com.devchats.devchats.util.RegextUtils;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
@@ -17,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
 
   private final UserRepository userRepo;
@@ -31,6 +35,11 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public User saveUser(User user) throws UserNotFoundException {
     findByUsernameOrEmail(user);
+
+    if( !emailIsValid(user.getEmail()) ){
+
+      throw new EmailException("Enter an valid email in format email@exzample.com");
+    }
 
     if (user.getId() != null) {
       findUserById(user.getId());
@@ -51,10 +60,15 @@ public class UserServiceImpl implements UserService {
     user.setSalt(encodedSalt);
 
     User savedUser;
+
+
     try {
       log.info("Saving user" + user);
+
       savedUser = userRepo.save(user);
+
     } catch (DataIntegrityViolationException ex) {
+
       throw new CustomException("Error occurred while saving user");
     }
 

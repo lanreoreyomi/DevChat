@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 import com.devchats.devchats.Audit.AuditTrail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,7 +65,6 @@ public class UserDetails extends AuditTrail implements Serializable {
   @NonNull
   private String about;
 
-
   @Column(
       name = "occupation",
       columnDefinition = "TEXT",
@@ -83,14 +83,17 @@ public class UserDetails extends AuditTrail implements Serializable {
   @NonNull
   @Nationalized
   private String education;
-  @Column(
-      name = "dob",
-      columnDefinition = "TEXT",
-      nullable = false
-  )
-  @JsonProperty(value = "dob")
+
+  @JsonProperty(value = "d_o_b")
   @NonNull
-  private String dob;       //TODO: Change this to calender or use date
+  @ToString.Exclude
+  private String dob;
+
+  @Column(
+      name = "dateOfBirth"
+  )
+  private LocalDate dateOfBirth;
+
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_fk", referencedColumnName = "id", nullable = false)
@@ -99,6 +102,7 @@ public class UserDetails extends AuditTrail implements Serializable {
 
   @Override
   public boolean equals(Object o) {
+
     if (this == o) {
       return true;
     }

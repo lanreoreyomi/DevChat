@@ -10,6 +10,7 @@ import com.devchats.devchats.model.UserDetails;
 import com.devchats.devchats.service.AddressServiceImpl;
 import com.devchats.devchats.service.UserDetailServiceImpl;
 import com.devchats.devchats.service.UserServiceImpl;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -115,7 +116,7 @@ public class UserController {
   @PutMapping("/{id}/userdetails")
   //http://localhost:5050/api/v1/user/1/userdetails
   public ResponseEntity<UserDetailsDTO> updateUserDetails(@PathVariable String id,
-      @RequestBody UserDetails request) throws UserNotFoundException {
+      @RequestBody UserDetails request) throws UserNotFoundException, ParseException {
 
     User user = userServiceImpl.findUserById(Long.valueOf(id)); //find user by id
 
@@ -140,7 +141,6 @@ public class UserController {
         && user.getAddress() != null) { //if user is not null != null) { //if user is not null
       request.setId(user.getAddress().getId());
     }
-
     request.setUser(user);
     Address address = addrServiceImpl.save(request);//save user details
     return ResponseEntity.ok(convertAddressEntityToDTO(address)); //return user details

@@ -1,13 +1,13 @@
 package com.devchats.devchats.service;
 
-import com.devchats.devchats.interfacce.AddressService;
+import com.devchats.devchats.interfacce.IAddressService;
 import com.devchats.devchats.model.Address;
 import com.devchats.devchats.repository.AddressRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddressServiceImpl implements AddressService {
+public class AddressServiceImpl implements IAddressService {
 
   private final AddressRepository addressRepo;
 

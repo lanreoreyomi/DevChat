@@ -68,6 +68,8 @@ public class Address extends AuditTrail implements Serializable {
   @Exclude
   private User user;
 
+  //TODO: ADD TIME ZONE
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

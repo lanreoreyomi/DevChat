@@ -13,6 +13,7 @@ import com.devchats.devchats.model.Address;
 import com.devchats.devchats.model.User;
 import com.devchats.devchats.model.UserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -53,7 +54,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
   Address address;
 
   @BeforeEach
-  public void setup() {
+  public void setup() throws ParseException {
      mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     user_one = createUser();
     user_one.setId(1L);

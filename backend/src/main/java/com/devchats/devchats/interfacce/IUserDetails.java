@@ -1,8 +1,11 @@
 package com.devchats.devchats.interfacce;
 
-public interface UserDetails {
+import java.text.ParseException;
 
-  com.devchats.devchats.model.UserDetails save(com.devchats.devchats.model.UserDetails userDetails);
+public interface IUserDetails {
+
+  com.devchats.devchats.model.UserDetails save(com.devchats.devchats.model.UserDetails userDetails)
+      throws ParseException;
 
   com.devchats.devchats.model.UserDetails findUserDetailsByUserId(Long Id);
 

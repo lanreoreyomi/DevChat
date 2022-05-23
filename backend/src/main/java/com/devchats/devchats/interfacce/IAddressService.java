@@ -3,7 +3,7 @@ package com.devchats.devchats.interfacce;
 import com.devchats.devchats.model.Address;
 import java.util.List;
 
-public interface AddressService {
+public interface IAddressService {
 
   Address findAddressByUserId(Long id);
 
