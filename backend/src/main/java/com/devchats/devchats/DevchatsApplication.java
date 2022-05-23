@@ -13,7 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-//@EnableSwagger2
+//TODO: Enabling the Swagger Annotation conflicts and break test cases.Looking into it
+@EnableSwagger2
 public class DevchatsApplication {
 
   @Bean
