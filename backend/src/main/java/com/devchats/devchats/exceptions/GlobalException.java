@@ -37,6 +37,25 @@ public class GlobalException {
     return new ResponseEntity<>(errorPojo, HttpStatus.BAD_REQUEST);
 
   }
+    @ExceptionHandler
+  public ResponseEntity<ErrorPojo> handleDateException(DateException ex){
+    ErrorPojo errorPojo =  new ErrorPojo();
+    errorPojo.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+    errorPojo.setMessage(ex.getMessage());
+    errorPojo.setTimestamp(System.currentTimeMillis());
+    return new ResponseEntity<>(errorPojo, HttpStatus.NOT_ACCEPTABLE);
+
+  }
+
+ @ExceptionHandler
+  public ResponseEntity<ErrorPojo> handleEmailException(EmailException ex){
+    ErrorPojo errorPojo =  new ErrorPojo();
+    errorPojo.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+    errorPojo.setMessage(ex.getMessage());
+    errorPojo.setTimestamp(System.currentTimeMillis());
+    return new ResponseEntity<>(errorPojo, HttpStatus.NOT_ACCEPTABLE);
+
+  }
 
 
 
