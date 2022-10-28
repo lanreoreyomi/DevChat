@@ -8,6 +8,7 @@ import com.devchats.model.Address;
 import com.devchats.model.AppUser;
 import com.devchats.model.UserDetails;
 import com.devchats.service.AddressServiceImpl;
+import com.devchats.service.JWTService;
 import com.devchats.service.UserDetailServiceImpl;
 import com.devchats.service.UserServiceImpl;
 import java.util.ArrayList;
@@ -29,20 +30,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/v1/user")
 @Slf4j
-public class UserController {
+public class AppUserController {
 
   private final UserServiceImpl userServiceImpl;
   private final AddressServiceImpl addrServiceImpl;
   private final UserDetailServiceImpl userDetailsImpl;
 
-  public UserController(UserServiceImpl userServiceImpl, AddressServiceImpl addrServiceImpl,
-      UserDetailServiceImpl userDetailsImpl) {
+  private final JWTService jwtGenerator;
+
+
+  public AppUserController(UserServiceImpl userServiceImpl, AddressServiceImpl addrServiceImpl,
+                           UserDetailServiceImpl userDetailsImpl, JWTService jwtGenerator ) {
     this.userServiceImpl = userServiceImpl;
     this.addrServiceImpl = addrServiceImpl;
     this.userDetailsImpl = userDetailsImpl;
+    this.jwtGenerator = jwtGenerator;
   }
 
-
+  @PostMapping("/login")
+  public ResponseEntity<?> loginUser(@RequestBody AppUser user) {
+    try {
+      if(user.getUserName() == null || user.getPassword() == null) {
+        throw new UserNotFoundException("UserName or Password is Empty");
+      }
+      AppUser userData = userServiceImpl.getUserByNameAndPassword(user.getUserName(), user.getPassword());
+      if(userData == null){
+        throw new UserNotFoundException("UserName or Password is Invalid");
+      }
+      return new ResponseEntity<>(jwtGenerator.generateToken(user), HttpStatus.OK);
+    } catch (UserNotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+  }
   //Get all users
   @GetMapping //http://localhost:5050/api/v1/user
   public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -65,7 +84,8 @@ public class UserController {
 
 
   // Creates a user
-  @PostMapping(consumes = "application/json")   //http://localhost:5050/api/v1/user
+//  @PostMapping(consumes = "application/json")   //http://localhost:5050/api/v1/register
+  @PostMapping("/register")   //http://localhost:5050/api/v1/register
   public ResponseEntity<Long> createUser(@RequestBody AppUser request)  //request body  is User
       throws UserNotFoundException {
 

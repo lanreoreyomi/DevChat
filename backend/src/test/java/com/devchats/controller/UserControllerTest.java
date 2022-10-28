@@ -1,8 +1,8 @@
 package com.devchats.controller;
 
-import static com.devchats.controller.UserController.convertAddressEntityToDTO;
-import static com.devchats.controller.UserController.convertUserDetailsEntityToDTO;
-import static com.devchats.controller.UserController.convertUserEntityToDTO;
+import static com.devchats.controller.AppUserController.convertAddressEntityToDTO;
+import static com.devchats.controller.AppUserController.convertUserDetailsEntityToDTO;
+import static com.devchats.controller.AppUserController.convertUserEntityToDTO;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -45,7 +45,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
   private MockMvc mockMvc;
 
   @MockBean
-  private UserController userController;
+  private AppUserController appUserController;
 
 
   AppUser user_one;
@@ -57,7 +57,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
   @BeforeEach
   public void setup() {
-     mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+     mockMvc = MockMvcBuilders.standaloneSetup(appUserController).build();
     user_one = createUser();
     user_one.setUserId(1L);
     user_one.setSalt("salt");
@@ -80,24 +80,24 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
     address = createAddress();
     address.setAddressId(1L);
 
-    when(userController.createUser(any())).thenReturn(
+    when(appUserController.createUser(any())).thenReturn(
         ResponseEntity.ok(user_one.getUserId()));
 
-    when(userController.getUserById(any())).thenReturn(
+    when(appUserController.getUserById(any())).thenReturn(
         ResponseEntity.ok(convertUserEntityToDTO(user_one)));
 
-    when(userController.getAllUsers()).thenReturn(ResponseEntity.ok(userList));
+    when(appUserController.getAllUsers()).thenReturn(ResponseEntity.ok(userList));
 
-    when(userController.updateUserById(any(), any())).thenReturn(
+    when(appUserController.updateUserById(any(), any())).thenReturn(
         ResponseEntity.ok(convertUserEntityToDTO(user_one)));
 
-    when(userController.deleteUserById(any())).thenReturn(
+    when(appUserController.deleteUserById(any())).thenReturn(
         ResponseEntity.ok("User Successfully deleted"));
 
-    when(userController.updateUserDetails(any(), any())).thenReturn(
+    when(appUserController.updateUserDetails(any(), any())).thenReturn(
         ResponseEntity.ok(convertUserDetailsEntityToDTO(userDetails)));
 
-    when(userController.updateUserAddress(any(), any())).thenReturn(ResponseEntity.ok(convertAddressEntityToDTO(address)));
+    when(appUserController.updateUserAddress(any(), any())).thenReturn(ResponseEntity.ok(convertAddressEntityToDTO(address)));
 
 
   }

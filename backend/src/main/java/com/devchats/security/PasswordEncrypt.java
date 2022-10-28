@@ -10,8 +10,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 
-public class EncryptPassword {
-  private final Logger logger = LoggerFactory.getLogger(EncryptPassword.class);
+public class PasswordEncrypt {
+  private final Logger logger = LoggerFactory.getLogger(PasswordEncrypt.class);
 
   public String encryptValue(String data, String key) {
     byte[] encryptedPass = null;
