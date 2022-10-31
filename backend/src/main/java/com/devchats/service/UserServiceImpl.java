@@ -5,14 +5,11 @@ import com.devchats.exceptions.UserNotFoundException;
 import com.devchats.interfacce.UserService;
 import com.devchats.model.AppUser;
 import com.devchats.repository.UserRepository;
-import com.devchats.security.PasswordEncrypt;
-import com.devchats.security.PasswordHash;
 import com.devchats.util.BycryptEncoder;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +27,6 @@ public class UserServiceImpl implements UserService {
   public UserServiceImpl(UserRepository userRepo,
       BycryptEncoder encoder) {
     this.userRepo = userRepo;
-
     this.encoder = encoder;
   }
 
@@ -41,7 +37,6 @@ public class UserServiceImpl implements UserService {
 
     try {
       user.setPassword(encoder.passwordEncoder().encode(user.getPassword()));
-      AppUser savedUser;
       log.info("Saving user" + user);
       return userRepo.save(user);
     } catch (DataIntegrityViolationException ex) {
