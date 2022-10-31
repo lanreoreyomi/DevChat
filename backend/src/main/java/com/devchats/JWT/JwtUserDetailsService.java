@@ -18,8 +18,6 @@ public class JwtUserDetailsService implements UserDetailsService {
   @Autowired
   private UserServiceImpl userService;
 
-  @Autowired
-  private BycryptEncoder encoder;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

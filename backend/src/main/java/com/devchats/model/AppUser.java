@@ -60,9 +60,6 @@ public class AppUser extends AuditTrail implements Serializable {
   @Nationalized
   private String lastName;
 
-  @Column(nullable = false)
-  @Nationalized
-  private String salt;
 
   @OneToOne(fetch = EAGER, cascade = CascadeType.ALL, mappedBy = "user")
   @JsonIgnore

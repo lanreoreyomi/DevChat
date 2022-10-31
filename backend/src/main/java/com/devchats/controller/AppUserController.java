@@ -59,8 +59,6 @@ public class AppUserController {
         Address addressByUserId = addrServiceImpl.findAddressByUserId(us.getUserId());
         us.setAddress(addressByUserId);
 
-
-
         userDtoList.add(convertUserEntityToDTO(us));
       }
     }
@@ -126,7 +124,7 @@ public class AppUserController {
 
     if (user != null
         && user.getUserdetails() != null) { //if user is not null != null) { //if user is not null
-      request.setUserDetailsId(user.getUserdetails().getUserDetailsId());
+      request.setId(user.getUserdetails().getId());
     }
     request.setUser(user);
     return ResponseEntity.ok(convertUserDetailsEntityToDTO(userDetailsImpl.save(request))); //return user details

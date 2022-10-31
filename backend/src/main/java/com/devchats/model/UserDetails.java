@@ -47,7 +47,7 @@ public class UserDetails extends AuditTrail implements Serializable {
   @Column(updatable = false,
       name = "id")
   @JsonProperty(value = "userDetailsId")
-  private Long userDetailsId;
+  private Long id;
 
   @Column(
       name = "phone",
@@ -109,7 +109,7 @@ public class UserDetails extends AuditTrail implements Serializable {
       return false;
     }
     UserDetails userdetails = (UserDetails) o;
-    return userDetailsId != null && Objects.equals(userDetailsId, userdetails.userDetailsId);
+    return id != null && Objects.equals(id, userdetails.id);
   }
 
   @Override

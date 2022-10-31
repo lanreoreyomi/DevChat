@@ -1,6 +1,7 @@
 package com.devchats.dto;
 
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class UserDetailsDTO {
   private String phone;
   private String occupation;
   private String education;
-  private String dob;
+  private LocalDate birthday;
   private String about;
 
 }

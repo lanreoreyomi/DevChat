@@ -23,49 +23,31 @@ public class UserServiceImpl implements UserService {
 
 
   private final UserRepository userRepo;
-  private final PasswordHash passwordHash;
-  @Autowired
+
   private BycryptEncoder encoder;
 
 
   public UserServiceImpl(UserRepository userRepo,
-      PasswordHash passwordHash,
       BycryptEncoder encoder) {
     this.userRepo = userRepo;
-    this.passwordHash = passwordHash;
+
     this.encoder = encoder;
-   }
+  }
 
   @Transactional
   public AppUser saveUser(AppUser user) throws UserNotFoundException {
-    findByUserNameOrEmail(user);
 
-    if (user.getUserId() != null) {
-      findUserById(user.getUserId());
-      log.info("Updating user with id: " + user.getUserId());
-      userRepo.save(user);
-    }
+    checkIfUserExist(user);
 
-//    //Generating salt and encoding user password.
-//    log.info("Generating password hash for" + user.getUserName());
-//    SecureRandom random = new SecureRandom();
-//    byte[] salt = new byte[16];
-//    random.nextBytes(salt);
-//    String encodedSalt = Base64.getEncoder().encodeToString(salt);
-//    String hashedPassword = passwordHash.getHashedPassword(user.getPassword(), encodedSalt);
-
-    //Setting user password and salt
-    user.setPassword(encoder.passwordEncoder().encode(user.getPassword()));
-    user.setSalt("salt");
-     AppUser savedUser;
     try {
+      user.setPassword(encoder.passwordEncoder().encode(user.getPassword()));
+      AppUser savedUser;
       log.info("Saving user" + user);
-      savedUser = userRepo.save(user);
+      return userRepo.save(user);
     } catch (DataIntegrityViolationException ex) {
       throw new CustomException("Error occurred while saving user");
     }
 
-    return savedUser;
   }
 
 
@@ -102,7 +84,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void findByUserNameOrEmail(AppUser user) {
+  public void checkIfUserExist(AppUser user) {
     AppUser byEmail = userRepo.findByUserNameOrEmail(user.getUserName(), user.getEmail());
     if (byEmail != null) {
 
@@ -119,28 +101,6 @@ public class UserServiceImpl implements UserService {
     if (byEmail != null) {
       throw new UserNotFoundException(String.format("%s not already taken", user.getEmail()));
     }
-  }
-
-
-  @Override
-  public AppUser getUserByNameAndPassword(String userName, String password)
-      throws UserNotFoundException {
-
-    Optional<AppUser> byUserName = userRepo.findByUserName(userName);
-
-    String userPassword = byUserName.get().getPassword();
-    String userSalt = byUserName.get().getSalt();
-
-    System.out.println("retrived password from user: " + byUserName.get().getUserName());
-
-    PasswordEncrypt decryptedPassword = new PasswordEncrypt();
-    decryptedPassword.decryptValue(password, userSalt);
-
-    Optional<AppUser> user = userRepo.findByUserNameAndPassword(userName, password);
-    if (user == null) {
-      throw new UserNotFoundException("Invalid id and password");
-    }
-    return user.get();
   }
 
 
