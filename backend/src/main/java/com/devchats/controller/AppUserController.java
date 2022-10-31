@@ -1,5 +1,6 @@
 package com.devchats.controller;
 
+import com.devchats.JWT.JwtAuthenticationController;
 import com.devchats.dto.AddressDTO;
 import com.devchats.dto.UserDTO;
 import com.devchats.dto.UserDetailsDTO;
@@ -8,7 +9,6 @@ import com.devchats.model.Address;
 import com.devchats.model.AppUser;
 import com.devchats.model.UserDetails;
 import com.devchats.service.AddressServiceImpl;
-import com.devchats.service.JWTService;
 import com.devchats.service.UserDetailServiceImpl;
 import com.devchats.service.UserServiceImpl;
 import java.util.ArrayList;
@@ -36,37 +36,22 @@ public class AppUserController {
   private final AddressServiceImpl addrServiceImpl;
   private final UserDetailServiceImpl userDetailsImpl;
 
-  private final JWTService jwtGenerator;
+
 
 
   public AppUserController(UserServiceImpl userServiceImpl, AddressServiceImpl addrServiceImpl,
-                           UserDetailServiceImpl userDetailsImpl, JWTService jwtGenerator ) {
+                           UserDetailServiceImpl userDetailsImpl,
+      JwtAuthenticationController jwtAuthenticationController) {
     this.userServiceImpl = userServiceImpl;
     this.addrServiceImpl = addrServiceImpl;
     this.userDetailsImpl = userDetailsImpl;
-    this.jwtGenerator = jwtGenerator;
-  }
-
-  @PostMapping("/login")
-  public ResponseEntity<?> loginUser(@RequestBody AppUser user) {
-    try {
-      if(user.getUserName() == null || user.getPassword() == null) {
-        throw new UserNotFoundException("UserName or Password is Empty");
-      }
-      AppUser userData = userServiceImpl.getUserByNameAndPassword(user.getUserName(), user.getPassword());
-      if(userData == null){
-        throw new UserNotFoundException("UserName or Password is Invalid");
-      }
-      return new ResponseEntity<>(jwtGenerator.generateToken(user), HttpStatus.OK);
-    } catch (UserNotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
-  }
+
   //Get all users
   @GetMapping //http://localhost:5050/api/v1/user
   public ResponseEntity<List<UserDTO>> getAllUsers() {
 
-    List<UserDTO> userDtoList = new ArrayList<>();  //create a list of userDTO
+    List<UserDTO> userDtoList = new ArrayList<>();
     for (AppUser us : userServiceImpl.getAllUsers()) {
       //convert each user to userDTO
       if (us != null) { //if user is not null
@@ -74,13 +59,13 @@ public class AppUserController {
         Address addressByUserId = addrServiceImpl.findAddressByUserId(us.getUserId());
         us.setAddress(addressByUserId);
 
-        System.out.println("us = " + us);
 
-        userDtoList.add(convertUserEntityToDTO(us)); //add userDTO to list
+
+        userDtoList.add(convertUserEntityToDTO(us));
       }
     }
-    return ResponseEntity.ok(userDtoList);//return list of userDTO
-  }   //end of getAllUsers
+    return ResponseEntity.ok(userDtoList);
+  }
 
 
   // Creates a user
