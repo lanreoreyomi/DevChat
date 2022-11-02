@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @AutoConfigureMockMvc
  public class UserControllerTest {
 
-  public static final String USER_ENDPOINT = "/api/v1/user";
+  public static final String USER_ENDPOINT = "/api/v1/uxcxcser";
 
   @Autowired
   private MockMvc mockMvc;
@@ -60,14 +60,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
      mockMvc = MockMvcBuilders.standaloneSetup(appUserController).build();
     user_one = createUser();
     user_one.setUserId(1L);
-    user_one.setSalt("salt");
-    user_one.setAddress(createAddress());
+     user_one.setAddress(createAddress());
 
     user_two = createUser();
     user_two.setUserId(2L);
     user_two.setUserName("user2_username");
-    user_two.setSalt("salt");
-    user_two.setAddress(createAddress());
+     user_two.setAddress(createAddress());
 
     List<UserDTO> userList = new ArrayList<>();
     userList.add(convertUserEntityToDTO(user_one));
@@ -75,7 +73,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
     userDetails = createUserDetails();
-    userDetails.setUserDetailsId(1L);
+    userDetails.setId(1L);
 
     address = createAddress();
     address.setAddressId(1L);
@@ -196,7 +194,7 @@ public void updateUserDetails() throws Exception {
           status().
 
               isOk())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userDetails.getUserDetailsId()));
+      .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userDetails.getId()));
 
 }
 

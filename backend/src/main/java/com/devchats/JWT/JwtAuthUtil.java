@@ -6,13 +6,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PassAndAuthUtil extends WebSecurityConfigurerAdapter {
+public class JwtAuthUtil extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private JwtRequestFilter jwtRequestFilter;
@@ -41,7 +39,7 @@ public class PassAndAuthUtil extends WebSecurityConfigurerAdapter {
         // dont authenticate this particular request
         .authorizeRequests()
         .antMatchers("/api/v1/user/register").permitAll()
-        .antMatchers("/api/v1/user/login").permitAll().
+        .antMatchers("/api/v1/login").permitAll().
         // all other requests need to be authenticated
             anyRequest().authenticated().and().
         // make sure we use stateless session; session won't be used to

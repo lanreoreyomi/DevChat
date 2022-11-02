@@ -46,8 +46,7 @@ public class UserRepositoryTest {
   public void checkIfUserIsSaved() {
 
     AppUser user = createUser();
-    user.setSalt("salt");
-    user.setUserId(1L);
+     user.setUserId(1L);
 
     AppUser savedUser = userRepo.save(user);
 
@@ -59,7 +58,6 @@ public class UserRepositoryTest {
   public void checkUpdateUserDetails() {
 
     AppUser user = createUser();
-    user.setSalt("salt");
     user.setUserId(1L);
 
     AppUser savedUser = userRepo.save(user);
@@ -73,9 +71,8 @@ public class UserRepositoryTest {
   public void checkIfAllUserIsReturned() {
     //when
     AppUser user1 = createUser();
-    user1.setSalt("salt");
+
     AppUser user2 = createUser();
-    user2.setSalt("salt");
     user2.setUserName("user2_username");
 
     userRepo.save(user1);
@@ -91,11 +88,9 @@ public class UserRepositoryTest {
   public void checkIfUserByIdIsReturned() {
     //when
     AppUser user1 = createUser();
-    user1.setSalt("salt");
     AppUser user2 = createUser();
     user2.setFirstName("User2");
-    user2.setSalt("salt");
-    user2.setUserName("user2_username");
+     user2.setUserName("user2_username");
 
     AppUser save = userRepo.save(user1);
     AppUser save1 = userRepo.save(user2);
@@ -116,11 +111,9 @@ public class UserRepositoryTest {
     //when
     //creating 2 users
     AppUser user1 = createUser();
-    user1.setSalt("salt");
-    AppUser user2 = createUser();
+     AppUser user2 = createUser();
     user2.setFirstName("User2");
-    user2.setSalt("salt");
-    user2.setUserName("user2_username");
+     user2.setUserName("user2_username");
 
     AppUser save = userRepo.save(user1);
     AppUser save1 = userRepo.save(user2);
@@ -143,7 +136,6 @@ public class UserRepositoryTest {
   public void checkUpdateUserById() {
     //when
     AppUser user = createUser();
-    user.setSalt("salt");
 
     //saving user
     AppUser expected = userRepo.save(user);
@@ -165,8 +157,7 @@ public class UserRepositoryTest {
   public void updateUserDetails() {
 
     AppUser user1 = createUser();
-    user1.setSalt("salt");
-    AppUser save = userRepo.save(user1);
+     AppUser save = userRepo.save(user1);
 
     assertThat(save).isNotNull();
     assertThat(save.getFirstName()).isEqualTo(save.getFirstName());
@@ -194,8 +185,7 @@ public class UserRepositoryTest {
   public void updateUserAddress() {
 
     AppUser user = createUser();
-    user.setSalt("salt");
-    AppUser save = userRepo.save(user);
+     AppUser save = userRepo.save(user);
 
     assertThat(save).isNotNull();
     assertThat(save.getFirstName()).isEqualTo(save.getFirstName());
@@ -225,7 +215,6 @@ public class UserRepositoryTest {
   public void checkIfEmailExists() throws Exception {
     //when
     AppUser user1 = createUser();
-    user1.setSalt("salt");
 
     //saving user
     AppUser savedUser1 = userRepo.save(user1);
@@ -238,8 +227,7 @@ public class UserRepositoryTest {
 
     //saving user
     AppUser user2 = createUser();
-    user2.setSalt("salt");
-    user2.setUserId(2L);
+     user2.setUserId(2L);
 //    user2.setUsername("user2_username");
 
     assertThrows(ConstraintViolationException.class,

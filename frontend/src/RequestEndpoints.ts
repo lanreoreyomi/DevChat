@@ -1,1 +1,1 @@
-export const APIENDPOINT='/api/v1/user';
+export const APIENDPOINT='/api/v1/user/register';

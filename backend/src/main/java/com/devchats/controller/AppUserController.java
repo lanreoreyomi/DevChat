@@ -48,14 +48,12 @@ public class AppUserController {
     }
 
   //Get all users
-  @GetMapping //http://localhost:5050/api/v1/user
+  @GetMapping
   public ResponseEntity<List<UserDTO>> getAllUsers() {
 
     List<UserDTO> userDtoList = new ArrayList<>();
     for (AppUser us : userServiceImpl.getAllUsers()) {
-      //convert each user to userDTO
-      if (us != null) { //if user is not null
-
+       if (us != null) {
         Address addressByUserId = addrServiceImpl.findAddressByUserId(us.getUserId());
         us.setAddress(addressByUserId);
 
@@ -67,16 +65,15 @@ public class AppUserController {
 
 
   // Creates a user
-//  @PostMapping(consumes = "application/json")   //http://localhost:5050/api/v1/register
-  @PostMapping("/register")   //http://localhost:5050/api/v1/register
+   @PostMapping("/register")
   public ResponseEntity<Long> createUser(@RequestBody AppUser request)  //request body  is User
       throws UserNotFoundException {
 
-    AppUser user = userServiceImpl.saveUser(request);      //save user
+    AppUser user = userServiceImpl.saveUser(request);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(user.getUserId());      //return userDTO
-  }     //end of createUser
+        .body(user.getUserId());
+  }
 
   // Gets a user by Id
   @GetMapping("/{id}")  //http://localhost:5050/api/v1/user/1
@@ -84,66 +81,61 @@ public class AppUserController {
 
     return ResponseEntity.status(HttpStatus.OK)      //return userDTO
         .body(convertUserEntityToDTO(userServiceImpl.findUserById(Long.valueOf(id))));
-  }       //end of getUserById
+  }
 
 
-  // Deletes a user by Id
-  @DeleteMapping("/{id}")     //http://localhost:5050/api/v1/user/1
+   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteUserById(@PathVariable String id) //returns string
       throws UserNotFoundException {
 
     userServiceImpl.deleteUserById(Long.valueOf(id)); //delete user
 
     return ResponseEntity.ok("User Successfully deleted"); //return string
-  }//end of deleteUserById
+  }
 
 
-   // Updates a user by Id
+
   @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
-  //http://localhost:5050/api/v1/user/1
+
   public ResponseEntity<UserDTO> updateUserById(@PathVariable String id, @RequestBody AppUser request)
       throws UserNotFoundException {
 
     if (id != null || !id.isEmpty()) {
-
       request.setUserId(Long.valueOf(id));
-
     }
 
      return ResponseEntity.ok(convertUserEntityToDTO(userServiceImpl.saveUser(request)));
-    //end of updateUserById
-  }
+   }
 
   //update user details
   @PutMapping("/{id}/userdetails")
-  //http://localhost:5050/api/v1/user/1/userdetails
+
   public ResponseEntity<UserDetailsDTO> updateUserDetails(@PathVariable String id,
                                                           @RequestBody UserDetails request) throws UserNotFoundException {
 
-    AppUser user = userServiceImpl.findUserById(Long.valueOf(id)); //find user by id
-
+    AppUser user = userServiceImpl.findUserById(Long.valueOf(id));
     if (user != null
-        && user.getUserdetails() != null) { //if user is not null != null) { //if user is not null
+        && user.getUserdetails() != null) {
       request.setId(user.getUserdetails().getId());
     }
     request.setUser(user);
-    return ResponseEntity.ok(convertUserDetailsEntityToDTO(userDetailsImpl.save(request))); //return user details
+    return ResponseEntity.ok(convertUserDetailsEntityToDTO(userDetailsImpl.save(request)));
   }
 
   //update address
-  @PutMapping("/{id}/address")  //http://localhost:5050/api/v1/user/1/address
+  @PutMapping("/{id}/address")
   public ResponseEntity<AddressDTO> updateUserAddress(@PathVariable String id,
                                                       @RequestBody Address request) throws UserNotFoundException {
 
-    AppUser user = userServiceImpl.findUserById(Long.valueOf(id)); //find user by id
+    AppUser user = userServiceImpl.findUserById(Long.valueOf(id));
 
     if (user != null
-        && user.getAddress() != null) { //if user is not null != null) { //if user is not null
+        && user.getAddress() != null) {
       request.setAddressId(user.getAddress().getAddressId());
     }
 
     request.setUser(user);
-     return ResponseEntity.ok(convertAddressEntityToDTO(addrServiceImpl.save(request))); //return user details
+     return ResponseEntity.ok(convertAddressEntityToDTO(addrServiceImpl.save(request)));
   }
 
 
@@ -180,7 +172,7 @@ public class AppUserController {
 
     UserDetailsDTO userDetailsDTO = null;
 
-    if (userDetails != null) {
+    if ( userDetails != null ) {
 
       userDetailsDTO = new UserDetailsDTO();
       BeanUtils.copyProperties(userDetails, userDetailsDTO);
