@@ -98,5 +98,7 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-
+  public void deleteAllUsers() {
+    userRepo.deleteAll();
+  }
 }

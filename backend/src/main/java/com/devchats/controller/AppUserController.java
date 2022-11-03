@@ -66,13 +66,13 @@ public class AppUserController {
 
   // Creates a user
    @PostMapping("/register")
-  public ResponseEntity<Long> createUser(@RequestBody AppUser request)  //request body  is User
+  public ResponseEntity<UserDTO> createUser(@RequestBody AppUser request)  //request body  is User
       throws UserNotFoundException {
 
     AppUser user = userServiceImpl.saveUser(request);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(user.getUserId());
+        .body(convertUserEntityToDTO(user));
   }
 
   // Gets a user by Id

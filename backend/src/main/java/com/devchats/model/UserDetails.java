@@ -5,6 +5,10 @@ import static javax.persistence.GenerationType.SEQUENCE;
 import com.devchats.Audit.AuditTrail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -93,6 +97,8 @@ public class UserDetails extends AuditTrail implements Serializable {
   @JsonProperty(value = "birthday")
   @NonNull
   @JsonFormat(pattern="dd-MM-yyyy")
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
   private LocalDate birthday;
 
   @OneToOne(fetch = FetchType.LAZY)
