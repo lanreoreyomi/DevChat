@@ -7,10 +7,13 @@ import com.devchats.dto.UserDetailsDTO;
 import com.devchats.exceptions.UserNotFoundException;
 import com.devchats.model.Address;
 import com.devchats.model.AppUser;
+import com.devchats.model.Post;
 import com.devchats.model.UserDetails;
 import com.devchats.service.AddressServiceImpl;
+import com.devchats.service.PostServiceImpl;
 import com.devchats.service.UserDetailServiceImpl;
 import com.devchats.service.UserServiceImpl;
+import com.devchats.util.AuthenticatedUser;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +38,18 @@ public class AppUserController {
   private final UserServiceImpl userServiceImpl;
   private final AddressServiceImpl addrServiceImpl;
   private final UserDetailServiceImpl userDetailsImpl;
+  private final PostServiceImpl postServiceImpl;
 
 
 
 
   public AppUserController(UserServiceImpl userServiceImpl, AddressServiceImpl addrServiceImpl,
                            UserDetailServiceImpl userDetailsImpl,
-      JwtAuthenticationController jwtAuthenticationController) {
+      PostServiceImpl postServiceImpl) {
     this.userServiceImpl = userServiceImpl;
     this.addrServiceImpl = addrServiceImpl;
     this.userDetailsImpl = userDetailsImpl;
+    this.postServiceImpl = postServiceImpl;
     }
 
   //Get all users
@@ -137,6 +142,15 @@ public class AppUserController {
     request.setUser(user);
      return ResponseEntity.ok(convertAddressEntityToDTO(addrServiceImpl.save(request)));
   }
+
+  @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getAllPosts(){
+
+    String username = AuthenticatedUser.getInstance().getName();
+
+    return ResponseEntity.ok(postServiceImpl.getPostsByUsername(username));
+
+    }
 
 
   public static UserDTO convertUserEntityToDTO(AppUser user) {

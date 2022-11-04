@@ -39,6 +39,8 @@ public class Comments {
   @Nationalized
   private String content;
 
+
+  //id of the user that added the comment
   @NonNull
   @ManyToOne
   @JoinColumn(name = "userId")

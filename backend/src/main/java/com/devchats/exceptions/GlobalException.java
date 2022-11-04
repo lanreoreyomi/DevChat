@@ -29,7 +29,7 @@ public class GlobalException {
   }
 
     @ExceptionHandler
-  public ResponseEntity<ErrorPojo> handleCustomException(CustomException ex){
+  public ResponseEntity<ErrorPojo> handleCustomException(PostNotFoundException ex){
     ErrorPojo errorPojo =  new ErrorPojo();
     errorPojo.setStatus(HttpStatus.BAD_REQUEST.value());
     errorPojo.setMessage(ex.getMessage());
@@ -37,6 +37,16 @@ public class GlobalException {
     return new ResponseEntity<>(errorPojo, HttpStatus.BAD_REQUEST);
 
   }
+  @ExceptionHandler
+  public ResponseEntity<ErrorPojo> handlePostNotFoundException(CustomException ex){
+    ErrorPojo errorPojo =  new ErrorPojo();
+    errorPojo.setStatus(HttpStatus.BAD_REQUEST.value());
+    errorPojo.setMessage(ex.getMessage());
+    errorPojo.setTimestamp(System.currentTimeMillis());
+    return new ResponseEntity<>(errorPojo, HttpStatus.BAD_REQUEST);
+
+  }
+
 
 
 

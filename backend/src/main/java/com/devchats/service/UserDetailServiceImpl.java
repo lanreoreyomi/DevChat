@@ -1,6 +1,6 @@
 package com.devchats.service;
 
-import com.devchats.interfacce.UserDetails;
+import com.devchats.ServiceInterface.UserDetails;
 import com.devchats.repository.UserDetailsRepository;
 import org.springframework.stereotype.Service;
 

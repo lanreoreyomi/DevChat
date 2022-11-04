@@ -2,7 +2,7 @@ package com.devchats.service;
 
 import com.devchats.exceptions.CustomException;
 import com.devchats.exceptions.UserNotFoundException;
-import com.devchats.interfacce.UserService;
+import com.devchats.ServiceInterface.UserService;
 import com.devchats.model.AppUser;
 import com.devchats.repository.UserRepository;
 import com.devchats.util.BycryptEncoder;
