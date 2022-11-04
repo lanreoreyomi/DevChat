@@ -1,6 +1,6 @@
 package com.devchats.service;
 
-import com.devchats.interfacce.AddressService;
+import com.devchats.ServiceInterface.AddressService;
 import com.devchats.model.Address;
 import com.devchats.repository.AddressRepository;
 import java.util.List;
