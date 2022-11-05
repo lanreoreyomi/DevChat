@@ -3,7 +3,6 @@ package com.devchats.JWT;
 
 import com.devchats.model.AppUser;
 import com.devchats.service.UserServiceImpl;
-import com.devchats.util.BycryptEncoder;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
