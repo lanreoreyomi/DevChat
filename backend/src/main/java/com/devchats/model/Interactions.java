@@ -34,11 +34,9 @@ public class Interactions {
   @Column(name = "interactionId")
   private Long interactionId;
 
-  @NonNull
   @OneToMany(mappedBy = "commentId")
   private List<Comments> comments = new ArrayList<>();
 
-  @NonNull
   @OneToMany(mappedBy = "likeId")
   private Set<Likes> likes = new HashSet<>();
 
