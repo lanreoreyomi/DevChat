@@ -1,5 +1,6 @@
 package com.devchats.JWT;
 
+import com.devchats.util.AuthenticatedUser;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +40,7 @@ public class JwtTokenUtil implements Serializable {
     final Claims claims = getAllClaimsFromToken(token);
     return claimsResolver.apply(claims);
   }
+
   //for retrieveing any information from token we will need the secret key
   private Claims getAllClaimsFromToken(String token) {
     return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -62,14 +65,21 @@ public class JwtTokenUtil implements Serializable {
   //   compaction of the JWT to a URL-safe string
   private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-    return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+    return Jwts.builder().setClaims(claims).setSubject(subject)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
         .signWith(SignatureAlgorithm.HS512, secret).compact();
   }
 
   //validate token
   public Boolean validateToken(String token, UserDetails userDetails) {
+
+    System.out.println(SecurityContextHolder.getContext().getAuthentication());
     final String username = getUsernameFromToken(token);
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+  }
+
+  private Boolean validateUsernames(String token) {
+    return false;
   }
 }

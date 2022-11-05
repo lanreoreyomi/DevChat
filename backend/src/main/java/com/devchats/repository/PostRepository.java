@@ -1,6 +1,5 @@
 package com.devchats.repository;
 
-import com.devchats.model.Address;
 import com.devchats.model.Post;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
