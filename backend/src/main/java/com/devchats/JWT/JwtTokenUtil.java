@@ -1,20 +1,17 @@
 package com.devchats.JWT;
 
-import com.devchats.util.AuthenticatedUser;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -74,12 +71,10 @@ public class JwtTokenUtil implements Serializable {
   //validate token
   public Boolean validateToken(String token, UserDetails userDetails) {
 
-    System.out.println(SecurityContextHolder.getContext().getAuthentication());
-    final String username = getUsernameFromToken(token);
-    return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+           System.out.println(SecurityContextHolder.getContext().getAuthentication());
+          final String username = getUsernameFromToken(token);
+          return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
 
-  private Boolean validateUsernames(String token) {
-    return false;
-  }
 }

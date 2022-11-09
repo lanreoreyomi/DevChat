@@ -18,6 +18,10 @@ public class JwtUserDetailsService implements UserDetailsService {
   private UserServiceImpl userService;
 
 
+  public JwtUserDetailsService(UserServiceImpl userService) {
+    this.userService = userService;
+  }
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

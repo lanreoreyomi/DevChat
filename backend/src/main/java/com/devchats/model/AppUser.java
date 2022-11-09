@@ -68,10 +68,22 @@ public class AppUser extends AuditTrail implements Serializable {
 
   @OneToOne(fetch = EAGER, cascade = CascadeType.ALL, mappedBy = "user")
   @JsonIgnore
+  @Exclude
+  private Post post;
+
+
+  @OneToOne(fetch = EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+  @JsonIgnore
   private Address address;
 
-  @ManyToMany(fetch=EAGER)
-  private Collection<Role> roles = new ArrayList<>();
+  @ManyToMany
+  @JoinTable(
+      name = "users_roles",
+      joinColumns = @JoinColumn(
+          name = "userId", referencedColumnName = "userId"),
+      inverseJoinColumns = @JoinColumn(
+          name = "roleId", referencedColumnName = "roleId"))
+  private Collection<Role> roles;
 
   @Override
   public boolean equals(Object o) {

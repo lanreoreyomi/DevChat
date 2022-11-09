@@ -5,7 +5,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 import com.devchats.Audit.AuditTrail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,9 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Nationalized;
-
 
 @Getter
 @Setter
@@ -66,7 +63,7 @@ public class Address extends AuditTrail implements Serializable {
 
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_fk", referencedColumnName = "userId", nullable = false)
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
   @JsonProperty
   @Exclude
   private AppUser user;
@@ -76,16 +73,43 @@ public class Address extends AuditTrail implements Serializable {
     if (this == o) {
       return true;
     }
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+    if (!(o instanceof Address)) {
       return false;
     }
+
     Address address = (Address) o;
-    return addressId != null && Objects.equals(addressId, address.addressId);
+
+    if (!addressId.equals(address.addressId)) {
+      return false;
+    }
+    if (!addressLine1.equals(address.addressLine1)) {
+      return false;
+    }
+    if (!city.equals(address.city)) {
+      return false;
+    }
+    if (!state.equals(address.state)) {
+      return false;
+    }
+    if (!country.equals(address.country)) {
+      return false;
+    }
+    if (!zipcode.equals(address.zipcode)) {
+      return false;
+    }
+    return user.equals(address.user);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(addressId);
+    int result = addressId.hashCode();
+    result = 31 * result + addressLine1.hashCode();
+    result = 31 * result + city.hashCode();
+    result = 31 * result + state.hashCode();
+    result = 31 * result + country.hashCode();
+    result = 31 * result + zipcode.hashCode();
+    result = 31 * result + user.hashCode();
+    return result;
   }
 }
 
