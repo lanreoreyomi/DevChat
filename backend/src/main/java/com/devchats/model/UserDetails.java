@@ -102,7 +102,7 @@ public class UserDetails extends AuditTrail implements Serializable {
   private LocalDate birthday;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_fk", referencedColumnName = "userId", nullable = false)
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
   @JsonProperty
   private AppUser user;
 

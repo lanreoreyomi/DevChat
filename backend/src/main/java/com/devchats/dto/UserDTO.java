@@ -1,5 +1,7 @@
 package com.devchats.dto;
 
+import com.devchats.model.Role;
+import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public class UserDTO {
   private String email;
   private AddressDTO address;
   private UserDetailsDTO userDetails;
+  private Collection<Role> roles;
 
 
 }

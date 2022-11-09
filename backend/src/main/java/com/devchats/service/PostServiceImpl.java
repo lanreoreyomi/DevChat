@@ -16,31 +16,35 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PostServiceImpl implements PostService {
 
-  private PostRepository postRepo;
+  private final PostRepository postRepo;
 
-  private AuthenticatedUser context;
 
-  public PostServiceImpl(PostRepository postRepo, AuthenticatedUser context) {
+
+  public PostServiceImpl(PostRepository postRepo) {
     this.postRepo = postRepo;
-    this.context = context;
+
   }
 
   @Override
   public Long createPost(Post post) {
 
-    Long postId = null;
+    Post savedPost;
     log.info("Saving Post");
+
     try {
 
-      postId = postRepo.save(post).getPostId();
+      savedPost = postRepo.save(post);
 
-      if (postId <= 0) {
+      if (savedPost.getPostId() <= 0) {
         log.error("Error creating post");
       }
-    } catch (Exception ex) {
-      throw new PostNotFoundException("Something went wrong while saving post");
     }
-    return postId;
+    catch (Exception ex) {
+
+      throw new PostNotFoundException("Something went wrong while saving post");
+
+    }
+    return savedPost.getPostId();
   }
 
   @Override

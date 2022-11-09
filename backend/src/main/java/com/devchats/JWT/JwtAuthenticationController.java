@@ -1,6 +1,5 @@
 package com.devchats.JWT;
 
-import com.devchats.util.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,10 +42,9 @@ public class JwtAuthenticationController {
 
   //TODO: work on this
   @RequestMapping(value = "/api/v1/user/logout", method = RequestMethod.POST)
-  public void logout() throws Exception {
+  public void logout()  {
 
-    String name = AuthenticatedUser.getInstance().getName();
-   }
+    }
 
   private void authenticate(String username, String password) throws Exception {
 

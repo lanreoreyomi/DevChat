@@ -1,6 +1,5 @@
 package com.devchats.controller;
 
-import com.devchats.JWT.JwtAuthenticationController;
 import com.devchats.dto.AddressDTO;
 import com.devchats.dto.UserDTO;
 import com.devchats.dto.UserDetailsDTO;
@@ -13,10 +12,8 @@ import com.devchats.service.AddressServiceImpl;
 import com.devchats.service.PostServiceImpl;
 import com.devchats.service.UserDetailServiceImpl;
 import com.devchats.service.UserServiceImpl;
-import com.devchats.util.AuthenticatedUser;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -105,7 +102,7 @@ public class AppUserController {
   public ResponseEntity<UserDTO> updateUserById(@PathVariable String id, @RequestBody AppUser request)
       throws UserNotFoundException {
 
-    if (id != null || !id.isEmpty()) {
+    if (id != null) {
       request.setUserId(Long.valueOf(id));
     }
 
@@ -143,13 +140,10 @@ public class AppUserController {
     return ResponseEntity.ok(convertAddressEntityToDTO(addrServiceImpl.save(request)));
   }
 
-  @GetMapping("/posts")
-  public ResponseEntity<List<Post>> getAllPosts(){
-
-    String username = AuthenticatedUser.getInstance().getName();
+  @GetMapping("/{username}/posts")
+  public ResponseEntity<List<Post>> getAllPosts(@PathVariable String username){
 
     return ResponseEntity.ok(postServiceImpl.getPostsByUsername(username));
-
   }
 
 
