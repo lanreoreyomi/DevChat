@@ -17,4 +17,6 @@ public interface PostService {
 
   public void deletePostById(Long Id);
 
+  public void deleteCommentById(Long Id);
+
 }

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PostServiceImpl implements PostService {
 
+
+  //TODO: Create a comment service and interface for comment. and even its own controller class.
   private final PostRepository postRepo;
   private final UserRepository userRepo;
 
@@ -59,13 +61,20 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public List<Post> getAllPosts() {
-    return Optional.of(postRepo.findAll()).orElseThrow(()->new PostNotFoundException("Error getting posts"));
+    return Optional.of(postRepo.findAll())
+        .orElseThrow(() -> new PostNotFoundException("Error getting posts"));
   }
 
   @Override
   public void deletePostById(Long Id) {
     getPostById(Id);
     postRepo.deleteById(Id);
+  }
+
+  @Override
+  public void deleteCommentById(Long commentId) {
+    log.info(String.format("Deleting comment with post id: %s", commentId));
+    postRepo.deleteById(commentId);
   }
 
   public List<Post> getPostsByUserId(Long id) {
@@ -79,12 +88,13 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public  List<Post> getPostsByUsername(String username) {
+  public List<Post> getPostsByUsername(String username) {
 
     log.info("Retrieving post with post id: " + username);
 
     Optional<List<Post>> posts = Optional.of(postRepo.getPostByUsername(username).orElseThrow(
-        () -> new PostNotFoundException(String.format("Error getting posts with username: %s ", username))));
+        () -> new PostNotFoundException(
+            String.format("Error getting posts with username: %s ", username))));
 
     return new ArrayList<>(posts.get());
   }

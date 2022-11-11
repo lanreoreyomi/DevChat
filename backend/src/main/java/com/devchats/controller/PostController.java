@@ -74,8 +74,6 @@ public class PostController {
         .body(postsByUserId);
   }
 
-  // TODO: Use this SQL to retrieve posts by username
-//  select p.content, u.email from post p join users u on p.user_id = u.user_id;
   @GetMapping("/user/{username}/posts")
   public ResponseEntity<List<Post>> GetPostsByUsername(@PathVariable String username)
       throws PostNotFoundException {
@@ -85,52 +83,6 @@ public class PostController {
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(postsByUserId);
-  }
-
-  @PostMapping("{id}/comment")
-  public ResponseEntity<Comments> getCommentById(@PathVariable String id,
-      @RequestBody String comment)
-      throws PostNotFoundException {
-
-    Post post = postServiceImpl.getPostById(Long.valueOf(id));
-
-    if (post != null) {
-      Comments comments = new Comments();
-      comments.setComment(comment);
-
-      post.getComments().add(comments);
-
-      postServiceImpl.createPost(post);
-
-      return ResponseEntity.status(HttpStatus.CREATED)
-          .body(post.getComments().stream().findFirst().get());
-
-    } else {
-
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(null);
-    }
-
-  }
-
-  @PutMapping("{postId}/comment/{commentId}")
-  public ResponseEntity<Comments> updateComment(@PathVariable String postId,
-      @PathVariable String commentId, @RequestBody String comment)
-      throws PostNotFoundException {
-
-    Post post = postServiceImpl.getPostById(Long.valueOf(postId));
-
-    post.getComments().stream()
-        .filter(e -> Objects.equals(e.getCommentId(), Long.valueOf(commentId))).findFirst().get()
-        .setComment(comment);
-
-    postServiceImpl.createPost(post);
-
-    Comments comments = post.getComments().stream()
-        .filter(e -> Objects.equals(e.getCommentId(), Long.valueOf(commentId))).findFirst().get();
-
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(comments);
   }
 
   @GetMapping()
@@ -154,4 +106,8 @@ public class PostController {
 
 
   }
+
+//  Comments API
+
+
 }

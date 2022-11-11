@@ -18,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   @Query(value = "select p from Post p where p.user.userId =:userId")
   Optional<List<Post>> getPostsByUserId(@Param("userId") Long userId);
+
+//  @Query(value = "delete from Comments c where c.commentId =:commentId")
+//  void deleteCommentById(@Param("commentId") Long commentId);
 }
