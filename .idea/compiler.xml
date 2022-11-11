@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="backend" target="9" />
-      <module name="devchats" target="9" />
+      <module name="devchats" target="10" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
