@@ -8,6 +8,8 @@ import com.devchats.service.PostServiceImpl;
 import com.devchats.service.UserServiceImpl;
 import com.devchats.util.AuthenticatedUser;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +30,12 @@ public class PostController {
   PostServiceImpl postServiceImpl;
 
   UserServiceImpl userServiceImpl;
+
   public PostController(PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl) {
     this.postServiceImpl = postServiceImpl;
     this.userServiceImpl = userServiceImpl;
   }
-  //TODO:Look into this. I expected post to return empty array for comments and likes
+
   @PostMapping("/create-post")
   public ResponseEntity<Post> createPost(@RequestBody String postRequest)
       throws PostNotFoundException {
@@ -47,7 +51,8 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(post);
   }
-  @GetMapping("{id}")
+
+  @GetMapping("/{id}")
   public ResponseEntity<Post> getPostById(@PathVariable String id) throws PostNotFoundException {
 
     Post post = postServiceImpl.getPostById(Long.valueOf(id));
@@ -56,36 +61,36 @@ public class PostController {
 
   }
 
-  //TODO: Create get post by username
-
-  @PostMapping("{id}/comment")
-  public ResponseEntity<String> getPostById(@PathVariable String id, @RequestBody String comment)
+  //    select p.content, u.email from post p join users u on p.user_id = u.user_id;
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<List<Post>> GetPostsByUserId(@PathVariable String userId)
       throws PostNotFoundException {
 
-    Post post = postServiceImpl.getPostById(Long.valueOf(id));
+    AppUser byUserName = userServiceImpl.findUserById(Long.valueOf(userId));
 
-    if (post != null) {
-      Comments comments = new Comments();
-      comments.setComment(comment);
+    List<Post> postsByUserId = postServiceImpl.getPostsByUserId(Long.valueOf(userId));
 
-      post.getComments().add(comments);
-
-      postServiceImpl.createPost(post);
-
-      return ResponseEntity.status(HttpStatus.CREATED)
-          .body(post.getComments().stream().findFirst().get().getComment());
-    } else {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body("Error saving post");
-    }
-
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(postsByUserId);
   }
-  @GetMapping()
-  public ResponseEntity<List<Post>> getAllPosts(){
 
-    if(postServiceImpl.getAllPosts().isEmpty()){
+  @GetMapping("/user/{username}/posts")
+  public ResponseEntity<List<Post>> GetPostsByUsername(@PathVariable String username)
+      throws PostNotFoundException {
+    AppUser byUserName = userServiceImpl.findByUserName(username);
+
+    List<Post> postsByUserId = postServiceImpl.getPostsByUsername(byUserName.getUserName());
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(postsByUserId);
+  }
+
+  @GetMapping()
+  public ResponseEntity<List<Post>> getAllPosts() {
+
+    if (postServiceImpl.getAllPosts().isEmpty()) {
       return ResponseEntity.notFound().build();
-    }else{
+    } else {
       return ResponseEntity.ok(postServiceImpl.getAllPosts());
     }
   }
@@ -101,4 +106,8 @@ public class PostController {
 
 
   }
+
+//  Comments API
+
+
 }

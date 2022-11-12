@@ -140,12 +140,12 @@ public class AppUserController {
     return ResponseEntity.ok(convertAddressEntityToDTO(addrServiceImpl.save(request)));
   }
 
-  @GetMapping("/{username}/posts")
-  public ResponseEntity<List<Post>> getAllPosts(@PathVariable String username){
-
-    return ResponseEntity.ok(postServiceImpl.getPostsByUsername(username));
-  }
-
+//  @GetMapping("/{username}/posts")
+//  public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username){
+//
+//    return ResponseEntity.ok(postServiceImpl.getPostsByUsername(username));
+//  }
+//
 
   public static UserDTO convertUserEntityToDTO(AppUser user) {
 

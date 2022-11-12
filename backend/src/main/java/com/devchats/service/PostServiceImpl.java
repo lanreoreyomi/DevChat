@@ -4,8 +4,11 @@ import com.devchats.ServiceInterface.PostService;
 import com.devchats.exceptions.PostNotFoundException;
 import com.devchats.model.Post;
 import com.devchats.repository.PostRepository;
-import com.devchats.util.AuthenticatedUser;
+import com.devchats.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,12 +19,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PostServiceImpl implements PostService {
 
+
+  //TODO: Create a comment service and interface for comment. and even its own controller class.
   private final PostRepository postRepo;
+  private final UserRepository userRepo;
 
-
-
-  public PostServiceImpl(PostRepository postRepo) {
+  public PostServiceImpl(PostRepository postRepo, UserRepository userRepo) {
     this.postRepo = postRepo;
+    this.userRepo = userRepo;
 
   }
 
@@ -38,8 +43,7 @@ public class PostServiceImpl implements PostService {
       if (savedPost.getPostId() <= 0) {
         log.error("Error creating post");
       }
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
 
       throw new PostNotFoundException("Something went wrong while saving post");
 
@@ -57,7 +61,8 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public List<Post> getAllPosts() {
-    return postRepo.findAll();
+    return Optional.of(postRepo.findAll())
+        .orElseThrow(() -> new PostNotFoundException("Error getting posts"));
   }
 
   @Override
@@ -66,8 +71,31 @@ public class PostServiceImpl implements PostService {
     postRepo.deleteById(Id);
   }
 
+  @Override
+  public void deleteCommentById(Long commentId) {
+    log.info(String.format("Deleting comment with post id: %s", commentId));
+    postRepo.deleteById(commentId);
+  }
+
+  public List<Post> getPostsByUserId(Long id) {
+
+    log.info("Retrieving post with post id: " + id);
+
+    Optional<List<Post>> posts = Optional.of(postRepo.getPostsByUserId(id).orElseThrow(
+        () -> new PostNotFoundException(String.format("Error getting posts with id: %s ", id))));
+
+    return new ArrayList<>(posts.get());
+  }
+
+  @Override
   public List<Post> getPostsByUsername(String username) {
 
-    return postRepo.getPostsByUsername(username);
+    log.info("Retrieving post with post id: " + username);
+
+    Optional<List<Post>> posts = Optional.of(postRepo.getPostByUsername(username).orElseThrow(
+        () -> new PostNotFoundException(
+            String.format("Error getting posts with username: %s ", username))));
+
+    return new ArrayList<>(posts.get());
   }
 }
